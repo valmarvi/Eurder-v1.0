@@ -19,7 +19,7 @@ public class OrderRepository {
     }
 
     public void createOrder(String customerId, List<ItemGroup> itemGroupList) {
-        Optional<Customer> customer = customerRepository.getCustomerByID(customerId);
+        Optional<Customer> customer = customerRepository.getCustomerById(customerId);
         validateCustomer(customer);
         Order order = new Order(itemGroupList);
         addOrderToDatabase(customer.get(), order);

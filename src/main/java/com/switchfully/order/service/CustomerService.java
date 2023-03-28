@@ -13,6 +13,7 @@ import com.switchfully.order.service.wrapper.CustomerWrapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerService {
@@ -20,7 +21,6 @@ public class CustomerService {
     private final UserCredentialsRepository userCredentialsRepository;
     private final CreateCustomerMapper createCustomerMapper;
     private final UserCredentialsMapper userCredentialsMapper;
-
     private final CustomerMapper customerMapper;
 
     public CustomerService(CustomerRepository customerRepository, UserCredentialsRepository userCredentialsRepository,
@@ -46,8 +46,14 @@ public class CustomerService {
         return customerMapper.toCustomerDTOList(customerRepository.getAllCustomers());
     }
 
+    public CustomerDTO getCustomerById(String customerId) {
+        return customerRepository.getCustomerById(customerId)
+                .map(customerMapper::toCustomerDTO)
+                .orElse(null);
+    }
+
     private void validateCustomerWrapper(CustomerWrapper customerWrapper) {
-        if(customerWrapper.getCreateCustomerDTO() == null || customerWrapper.getUserCredentials() == null){
+        if (customerWrapper.getCreateCustomerDTO() == null || customerWrapper.getUserCredentials() == null) {
             throw new IllegalArgumentException("Admin data and UserCredentials data must be filled.");
         }
         validateFirstName(customerWrapper.getCreateCustomerDTO().getFirstName());

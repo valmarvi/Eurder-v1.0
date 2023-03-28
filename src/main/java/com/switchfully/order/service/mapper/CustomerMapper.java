@@ -21,6 +21,7 @@ public class CustomerMapper {
 
     public CustomerDTO toCustomerDTO(Customer customer) {
         return new CustomerDTO.CustomerDTOBuilder()
+                .withId(customer.getId())
                 .withFirstName(customer.getFirstName())
                 .withLastName(customer.getLastName())
                 .withEmail(customer.getEmail())

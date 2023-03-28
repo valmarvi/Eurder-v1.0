@@ -35,4 +35,11 @@ public class CustomerController {
 //        securityService.validateAuthorization(authorization, Feature.CAN_SEE_ALL_MEMBERS);
         return customerService.getAllCustomers();
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(produces = "application/json", value = "{customerId}")
+    public CustomerDTO getCustomerById(@PathVariable String customerId) {
+        myLogger.info("Retrieving Customer with id " + customerId);
+        return customerService.getCustomerById(customerId);
+    }
 }

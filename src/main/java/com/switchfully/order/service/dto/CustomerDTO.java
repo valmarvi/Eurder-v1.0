@@ -3,19 +3,24 @@ package com.switchfully.order.service.dto;
 import com.switchfully.order.domain.models.users.Address;
 
 public class CustomerDTO {
-
+    private final String id;
     private final String firstName;
     private final String lastName;
     private final String email;
     private final Address address;
     private final String phoneNumber;
 
-    private CustomerDTO(String firstName, String lastName, String email, Address address, String phoneNumber) {
+    private CustomerDTO(String id, String firstName, String lastName, String email, Address address, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getFirstName() {
@@ -39,11 +44,17 @@ public class CustomerDTO {
     }
 
     public static class CustomerDTOBuilder {
+        private String id;
         private String firstName;
         private String lastName;
         private String email;
         private Address address;
         private String phoneNumber;
+
+        public CustomerDTOBuilder withId(String id) {
+            this.id = id;
+            return this;
+        }
 
         public CustomerDTOBuilder withFirstName(String firstName) {
             this.firstName = firstName;
@@ -71,7 +82,7 @@ public class CustomerDTO {
         }
 
         public CustomerDTO build() {
-            return new CustomerDTO(firstName, lastName, email, address, phoneNumber);
+            return new CustomerDTO(id, firstName, lastName, email, address, phoneNumber);
         }
     }
 }

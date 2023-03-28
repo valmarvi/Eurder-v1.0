@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
 
 @Repository
 public class CustomerRepository {
@@ -34,7 +35,7 @@ public class CustomerRepository {
         return customerDatabase;
     }
 
-    public Optional<Customer> getCustomerByID(String itemId) {
+    public Optional<Customer> getCustomerById(String itemId) {
         return customerDatabase.stream()
                 .filter(item -> item.getId().equals(itemId))
                 .findFirst();
