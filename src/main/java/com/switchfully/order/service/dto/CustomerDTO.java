@@ -2,14 +2,15 @@ package com.switchfully.order.service.dto;
 
 import com.switchfully.order.domain.models.users.Address;
 
-public class CreateCustomerDTO {
+public class CustomerDTO {
+
     private final String firstName;
     private final String lastName;
     private final String email;
     private final Address address;
     private final String phoneNumber;
 
-    private CreateCustomerDTO(String firstName, String lastName, String email, Address address, String phoneNumber) {
+    private CustomerDTO(String firstName, String lastName, String email, Address address, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -37,41 +38,40 @@ public class CreateCustomerDTO {
         return phoneNumber;
     }
 
-    public static class CreateCustomerDTOBuilder {
+    public static class CustomerDTOBuilder {
         private String firstName;
         private String lastName;
         private String email;
         private Address address;
         private String phoneNumber;
 
-        public CreateCustomerDTOBuilder withFirstName(String firstName) {
+        public CustomerDTOBuilder withFirstName(String firstName) {
             this.firstName = firstName;
             return this;
         }
 
-        public CreateCustomerDTOBuilder withLastName(String lastName) {
+        public CustomerDTOBuilder withLastName(String lastName) {
             this.lastName = lastName;
             return this;
         }
 
-        public CreateCustomerDTOBuilder withEmail(String email) {
+        public CustomerDTOBuilder withEmail(String email) {
             this.email = email;
             return this;
         }
 
-        public CreateCustomerDTOBuilder withAddress(Address address) {
+        public CustomerDTOBuilder withAddress(Address address) {
             this.address = address;
             return this;
         }
 
-        public CreateCustomerDTOBuilder withPhoneNumber(String phoneNumber) {
+        public CustomerDTOBuilder withPhoneNumber(String phoneNumber) {
             this.phoneNumber = phoneNumber;
             return this;
         }
 
-        public CreateCustomerDTO build() {
-            return new CreateCustomerDTO(firstName, lastName, email, address, phoneNumber);
+        public CustomerDTO build() {
+            return new CustomerDTO(firstName, lastName, email, address, phoneNumber);
         }
     }
 }
-

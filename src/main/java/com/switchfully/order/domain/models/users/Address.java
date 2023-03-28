@@ -1,4 +1,4 @@
-package com.switchfully.order.domain.models;
+package com.switchfully.order.domain.models.users;
 
 public class Address {
     private final String streetaName;
@@ -11,5 +11,21 @@ public class Address {
         this.houseNumber = houseNumber;
         this.postCode = postCode;
         this.city = city;
+    }
+
+    public String getStreetaName() {
+        return streetaName;
+    }
+
+    public String getHouseNumber() {
+        return houseNumber;
+    }
+
+    public String getPostCode() {
+        return postCode;
+    }
+
+    public String getCity() {
+        return city;
     }
 }

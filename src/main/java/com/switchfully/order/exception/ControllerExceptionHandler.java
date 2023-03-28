@@ -1,5 +1,8 @@
 package com.switchfully.order.exception;
 
+import com.switchfully.order.exception.exceptions.CustomerNotFoundException;
+import com.switchfully.order.exception.exceptions.ItemNotFoundException;
+import com.switchfully.order.exception.exceptions.DuplicateEmailException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,36 +21,30 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final Logger logger = LoggerFactory.getLogger(ControllerExceptionHandler.class);
 
-//    @ExceptionHandler(BookNotFoundException.class)
-//    protected void bookNotFoundException(BookNotFoundException ex,
-//                                         HttpServletResponse response) throws IOException {
-//        response.sendError(HttpStatus.NOT_FOUND.value(), ex.getMessage());
-//    }
-//
-//    @ExceptionHandler(INSSNumberNotFilledException.class)
-//    protected void inssNumberNotFilletException(INSSNumberNotFilledException ex,
-//                                                HttpServletResponse response) throws IOException {
-//        logger.error(ex.getMessage());
-//        response.sendError(SC_BAD_REQUEST, ex.getMessage());
-//    }
-//
-//    @ExceptionHandler(DuplicatedINSSNumberException.class)
-//    protected void duplicatedINSSNumberException(DuplicatedINSSNumberException ex,
-//                                                 HttpServletResponse response) throws IOException {
-//        logger.error(ex.getMessage());
-//        response.sendError(SC_BAD_REQUEST, ex.getMessage());
-//    }
-
     @ExceptionHandler(IllegalArgumentException.class)
-    protected void illegalArgumentException(IllegalArgumentException ex, HttpServletResponse response) throws IOException {
+    protected void illegalArgumentException(IllegalArgumentException ex,
+                                            HttpServletResponse response) throws IOException {
         logger.error(ex.getMessage());
-        response.sendError(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        response.sendError(SC_BAD_REQUEST, ex.getMessage());
     }
 
-//    @ExceptionHandler(AuthorNotFoundException.class)
-//    protected void authorNotFoundException(AuthorNotFoundException ex, HttpServletResponse response) throws IOException {
-//        response.sendError(HttpStatus.NOT_FOUND.value(), ex.getMessage());
-//    }
+    @ExceptionHandler(DuplicateEmailException.class)
+    protected void duplicatedINSSNumberException(DuplicateEmailException ex,
+                                                 HttpServletResponse response) throws IOException {
+        logger.error(ex.getMessage());
+        response.sendError(SC_BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(ItemNotFoundException.class)
+    protected void itemNotFoundException(ItemNotFoundException ex) {
+        logger.error(ex.getMessage());
+    }
+    @ExceptionHandler(CustomerNotFoundException.class)
+    protected void customerNotFoundException(CustomerNotFoundException ex) {
+        logger.error(ex.getMessage());
+    }
+
+//
 //
 //    @ExceptionHandler(UnauthorizedAccessException.class)
 //    protected void unauthorizedAccessException(UnauthorizedAccessException ex, HttpServletResponse response) throws IOException {

@@ -1,4 +1,4 @@
-package com.switchfully.order.domain.models;
+package com.switchfully.order.domain.models.users;
 
 import java.util.List;
 import java.util.UUID;

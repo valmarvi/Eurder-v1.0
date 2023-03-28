@@ -1,33 +1,43 @@
 package com.switchfully.order.domain.repositories;
 
-import com.switchfully.order.domain.models.Address;
-import com.switchfully.order.domain.models.Customer;
-import com.switchfully.order.exception.exceptions.DuplicatedINSSNumberException;
+import com.switchfully.order.domain.models.users.Address;
+import com.switchfully.order.domain.models.users.Customer;
+import com.switchfully.order.exception.exceptions.DuplicateEmailException;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 public class CustomerRepository {
-    private final ConcurrentHashMap<String, Customer> customerDatabase;
+    private final List<Customer> customerDatabase;
 
     public CustomerRepository() {
-        customerDatabase = new ConcurrentHashMap<>();
+        customerDatabase = new ArrayList<>();
         initializeDummyData();
     }
 
-    public void createCustomer(Customer aCustomer){
-        Optional<Customer> memberWithSameEmail = customerDatabase.values().stream()
-                .filter(user -> user.getClass().equals(Customer.class))
+    public void createCustomer(Customer aCustomer) {
+        Optional<Customer> memberWithSameEmail = customerDatabase.stream()
                 .filter(customer -> customer.getEmail().equals(aCustomer.getEmail()))
                 .findAny();
 
         if (memberWithSameEmail.isPresent()) {
-            throw new DuplicatedINSSNumberException("There is already a user with the same e-mail");
+            throw new DuplicateEmailException("There is already a customer with the same e-mail");
         }
 
-        customerDatabase.put(aCustomer.getId(), aCustomer);
+        customerDatabase.add(aCustomer);
+    }
+
+    public List<Customer> getAllCustomers() {
+        return customerDatabase;
+    }
+
+    public Optional<Customer> getCustomerByID(String itemId) {
+        return customerDatabase.stream()
+                .filter(item -> item.getId().equals(itemId))
+                .findFirst();
     }
 
     private void initializeDummyData() {
@@ -53,8 +63,12 @@ public class CustomerRepository {
                 .withPhoneNumber("0978563324")
                 .build();
 
-        customerDatabase.put(bigSpender.getId(), bigSpender);
-        customerDatabase.put(mediumSpender.getId(), mediumSpender);
-        customerDatabase.put(lowSpender.getId(), lowSpender);
+        customerDatabase.add(bigSpender);
+        customerDatabase.add(mediumSpender);
+        customerDatabase.add(lowSpender);
+    }
+
+    public String getByIndex(int index) {
+        return customerDatabase.get(index).getId();
     }
 }

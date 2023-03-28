@@ -1,4 +1,4 @@
-package com.switchfully.order.domain.models;
+package com.switchfully.order.domain.models.users;
 
 import java.util.List;
 
@@ -11,6 +11,14 @@ public class Customer extends User{
         featureList = List.of();
         this.address = address;
         this.phoneNumber = phoneNumber;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     @Override
