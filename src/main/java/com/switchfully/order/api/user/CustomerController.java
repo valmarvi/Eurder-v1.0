@@ -36,7 +36,7 @@ public class CustomerController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(produces = "application/json", value = "customers")
-    public List<CustomerDTO> getMembers(@RequestHeader(required = false) String authorization){
+    public List<CustomerDTO> getAllCustomers(@RequestHeader(required = false) String authorization){
         myLogger.info("Retrieving all Customers.");
         securityService.validateUser(authorization, CAN_RETRIEVE_ALL_CUSTOMERS);
         return customerService.getAllCustomers();

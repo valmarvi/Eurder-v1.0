@@ -3,7 +3,7 @@ package com.switchfully.order.service.order;
 import com.switchfully.order.domain.models.order.ItemGroup;
 import com.switchfully.order.domain.repositories.order.ItemGroupRepository;
 import com.switchfully.order.domain.repositories.order.OrderRepository;
-import com.switchfully.order.service.support.dto.order.ItemGroupDTO;
+import com.switchfully.order.service.support.wrapper.OrderWrapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +18,11 @@ public class OrderService {
         this.itemGroupRepository = itemGroupRepository;
     }
 
-    public void createOrder(String customerId, List<ItemGroupDTO> itemGroupListDTO) {
-        List<ItemGroup> itemGroupList = itemGroupListDTO.stream()
+    public void createOrder(OrderWrapper orderWrapper) {
+        List<ItemGroup> itemGroupList = orderWrapper.getItemGroupListDTO().stream()
                 .map(itemGroupDTO -> itemGroupRepository.createItemGroup(itemGroupDTO.getItemId(), itemGroupDTO.getAmount()))
                 .toList();
 
-        orderRepository.createOrder(customerId, itemGroupList);
+        orderRepository.createOrder(orderWrapper.getCustomerId(), itemGroupList);
     }
 }

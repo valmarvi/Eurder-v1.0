@@ -2,6 +2,7 @@ package com.switchfully.order.api.order;
 
 import com.switchfully.order.service.order.OrderService;
 import com.switchfully.order.service.support.dto.order.ItemGroupDTO;
+import com.switchfully.order.service.support.wrapper.OrderWrapper;
 import com.switchfully.order.service.user.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,10 +29,10 @@ public class OrderController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = "application/json", value = "order")
-    public void createOrder(@RequestBody String customerId, @RequestBody List<ItemGroupDTO> itemGroupListDTO/*,
-                            @RequestHeader(required = false) String authorization*/){
+    public void createOrder(@RequestBody OrderWrapper orderWrapper,
+                            @RequestHeader(required = false) String authorization){
         myLogger.info("Adding a New Order to the Database.");
 //        securityService.validateUser(authorization, CAN_ORDER_ITEMS);
-        orderService.createOrder(customerId, itemGroupListDTO);
+        orderService.createOrder(orderWrapper);
     }
 }
