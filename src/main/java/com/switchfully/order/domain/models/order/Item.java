@@ -6,8 +6,8 @@ public class Item {
     private final String id;
     private final String name;
     private final String description;
-    private final int price;
-    private final int stockAmount;
+    private final double price;
+    private int stockAmount;
 
     public Item(String name, String description, int price, int stockAmount) {
         this.id = UUID.randomUUID().toString();
@@ -29,11 +29,15 @@ public class Item {
         return description;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
     public int getStockAmount() {
         return stockAmount;
+    }
+
+    public void changeStockAmount(int amountToSubtract) {
+        this.stockAmount -= amountToSubtract;
     }
 }

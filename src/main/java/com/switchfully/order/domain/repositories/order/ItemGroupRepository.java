@@ -18,8 +18,10 @@ public class ItemGroupRepository {
     public ItemGroup createItemGroup(String itemId, int amount) {
         Optional<Item> item = itemRepository.getItemByID(itemId);
         validateItem(item);
-        int price = amount * item.get().getPrice();
-        return new ItemGroup(item.get().getId(), amount, item.get().getStockAmount(), price);
+        double price = amount * item.get().getPrice();
+        ItemGroup itemGroup = new ItemGroup(item.get().getId(), amount, item.get().getStockAmount(), price);
+        item.get().changeStockAmount(amount);
+        return itemGroup;
     }
 
     private void validateItem(Optional<Item> item) {

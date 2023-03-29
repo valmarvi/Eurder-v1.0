@@ -19,11 +19,12 @@ public class OrderRepository {
         orderDatabase = new HashMap<>();
     }
 
-    public void createOrder(String customerId, List<ItemGroup> itemGroupList) {
+    public Order createOrder(String customerId, List<ItemGroup> itemGroupList) {
         Optional<Customer> customer = customerRepository.getCustomerById(customerId);
         validateCustomer(customer);
         Order order = new Order(itemGroupList);
         addOrderToDatabase(customer.get(), order);
+        return order;
     }
 
     private void addOrderToDatabase(Customer customer, Order order) {

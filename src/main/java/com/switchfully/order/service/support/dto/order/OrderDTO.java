@@ -1,23 +1,24 @@
-package com.switchfully.order.domain.models.order;
+package com.switchfully.order.service.support.dto.order;
+
+import com.switchfully.order.domain.models.order.ItemGroup;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class Order {
+public class OrderDTO {
     private final List<ItemGroup> itemGroupList;
     private final double totalPrice;
 
-    public Order(List<ItemGroup> itemGroupList) {
+    public OrderDTO(List<ItemGroup> itemGroupList) {
         this.itemGroupList = itemGroupList;
         this.totalPrice = calculateTotalPrice(itemGroupList);
     }
 
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
     public List<ItemGroup> getItemGroupList() {
         return itemGroupList;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
     }
 
     private double calculateTotalPrice(List<ItemGroup> itemGroupList) {

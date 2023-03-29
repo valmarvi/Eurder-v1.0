@@ -6,11 +6,11 @@ public class ItemDTO {
     private final String id;
     private final String name;
     private final String description;
-    private final int price;
+    private final double price;
     private final int stockAmount;
 
-    public ItemDTO(String name, String description, int price, int stockAmount) {
-        this.id = UUID.randomUUID().toString();
+    public ItemDTO(String id, String name, String description, double price, int stockAmount) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
@@ -29,7 +29,7 @@ public class ItemDTO {
         return description;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 

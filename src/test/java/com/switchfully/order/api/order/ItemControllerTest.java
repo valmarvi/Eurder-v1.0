@@ -1,9 +1,13 @@
 package com.switchfully.order.api.order;
 
+import com.switchfully.order.domain.repositories.order.ItemRepository;
 import com.switchfully.order.service.support.dto.order.CreateItemDTO;
+import com.switchfully.order.service.support.mapper.order.CreateItemMapper;
 import io.restassured.RestAssured;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -15,6 +19,10 @@ class ItemControllerTest {
 
     @LocalServerPort
     int port;
+    @Autowired
+    ItemRepository itemRepository;
+    @Autowired
+    CreateItemMapper createItemMapper;
 
     @Test
     @DisplayName("When Creating a Item, then it Returns a Created Http Status Code")
@@ -22,6 +30,7 @@ class ItemControllerTest {
         //Given
         CreateItemDTO createItemDTO = new CreateItemDTO("iPad Mini", "The best solution for compact",
                 450, 5);
+        itemRepository.createItem(createItemMapper.toCreateItem(createItemDTO));
 
         //When  //Then
         RestAssured.given()
@@ -34,5 +43,8 @@ class ItemControllerTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value());
+
+        //Then
+        Assertions.assertThat(itemRepository.getAllItems().size()).isEqualTo(7);
     }
 }
