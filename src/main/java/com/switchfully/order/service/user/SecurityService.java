@@ -8,7 +8,6 @@ import com.switchfully.order.domain.repositories.user.AdminRepository;
 import com.switchfully.order.domain.repositories.user.CustomerRepository;
 import com.switchfully.order.domain.repositories.user.UserCredentialsRepository;
 import com.switchfully.order.exception.exceptions.UnauthorizedAccessException;
-import com.switchfully.order.service.support.dto.user.UserCredentialsDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

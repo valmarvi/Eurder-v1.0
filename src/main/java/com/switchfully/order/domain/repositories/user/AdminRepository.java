@@ -15,7 +15,6 @@ public class AdminRepository {
         initializeDummyData();
     }
 
-
     private void initializeDummyData() {
         Admin admin = new Admin("Louie", "Charles","l.charles@gmail.com");
         adminDatabase.add(admin);
@@ -30,16 +29,4 @@ public class AdminRepository {
                 .filter(admin -> admin.getId().equals(adminId))
                 .findFirst();
     }
-
-    //    public void createAdmin(Admin aAdmin){
-//        Optional<Admin> adminWithSameEmail = adminDatabase.stream()
-//                .filter(admin -> admin.getEmail().equals(aAdmin.getEmail()))
-//                .findFirst();
-//
-//        if (adminWithSameEmail.isPresent()) {
-//            throw new DuplicateEmailException("There is already a admin with the same e-mail");
-//        }
-//
-//        adminDatabase.add(aAdmin);
-//    }
 }

@@ -3,6 +3,7 @@ package com.switchfully.order.api.order;
 import com.switchfully.order.service.order.OrderService;
 import com.switchfully.order.service.support.dto.order.OrderDTO;
 import com.switchfully.order.service.support.mapper.order.OrderMapper;
+import com.switchfully.order.service.support.wrapper.OrderDTOWrapper;
 import com.switchfully.order.service.support.wrapper.OrderWrapper;
 import com.switchfully.order.service.user.SecurityService;
 import org.slf4j.Logger;
@@ -29,9 +30,9 @@ public class OrderController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(consumes = "application/json", value = "order")
-    public OrderDTO createOrder(@RequestBody OrderWrapper orderWrapper,
-                                      @RequestHeader(required = false) String authorization){
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    public OrderDTOWrapper createOrder(@RequestBody OrderWrapper orderWrapper,
+                                       @RequestHeader(required = false) String authorization){
         myLogger.info("Adding a New Order to the Database.");
         securityService.validateUser(authorization, CAN_ORDER_ITEMS);
         return orderService.createOrder(orderWrapper);

@@ -9,7 +9,7 @@ public class Item {
     private final double price;
     private int stockAmount;
 
-    public Item(String name, String description, int price, int stockAmount) {
+    public Item(String name, String description, double price, int stockAmount) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.description = description;

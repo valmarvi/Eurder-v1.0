@@ -11,7 +11,6 @@ import com.switchfully.order.service.support.mapper.user.CustomerMapper;
 import com.switchfully.order.service.support.mapper.user.UserCredentialsMapper;
 import com.switchfully.order.service.support.wrapper.CustomerWrapper;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.util.List;
 
@@ -47,9 +46,7 @@ public class CustomerService {
     }
 
     public CustomerDTO getCustomerById(String customerId) {
-        return customerRepository.getCustomerById(customerId)
-                .map(customerMapper::toCustomerDTO)
-                .orElseThrow(() -> new NotFoundException("The Customer with the Provided Id is Not in the System"));
+        return customerMapper.toCustomerDTO(customerRepository.getCustomerById(customerId).get());
     }
 
     private void validateCustomerWrapper(CustomerWrapper customerWrapper) {

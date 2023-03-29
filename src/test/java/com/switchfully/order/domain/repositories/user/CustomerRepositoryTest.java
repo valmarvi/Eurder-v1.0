@@ -59,7 +59,7 @@ class CustomerRepositoryTest {
         customerRepository.createCustomer(customerToTest);
 
         //Then
-        Assertions.assertThat(customerRepository.getCustomerById(customerToTest.getId())).isPresent();
+        Assertions.assertThat(customerRepository.getAllCustomers()).contains(customerToTest);
     }
 
     @Test
