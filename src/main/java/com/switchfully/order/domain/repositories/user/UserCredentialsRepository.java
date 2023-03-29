@@ -42,9 +42,9 @@ public class UserCredentialsRepository {
 
     private void initializeDummyData() {
         userCredentialsDatabase.put(new UserCredentials("lcharles", "pwd"), adminRepository.getByIndex(0));
-        userCredentialsDatabase.put(new UserCredentials("jcobol", "pwd"), customerRepository.getByIndex(0));
-        userCredentialsDatabase.put(new UserCredentials("mbeck", "pwd"), customerRepository.getByIndex(1));
-        userCredentialsDatabase.put(new UserCredentials("mmarques", "pwd"), customerRepository.getByIndex(2));
+        userCredentialsDatabase.put(new UserCredentials("jcobol", "pwd"), customerRepository.getCustomerIdByIndex(0));
+        userCredentialsDatabase.put(new UserCredentials("mbeck", "pwd"), customerRepository.getCustomerIdByIndex(1));
+        userCredentialsDatabase.put(new UserCredentials("mmarques", "pwd"), customerRepository.getCustomerIdByIndex(2));
     }
 
 

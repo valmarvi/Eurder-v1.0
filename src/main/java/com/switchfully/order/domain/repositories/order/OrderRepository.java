@@ -43,7 +43,7 @@ public class OrderRepository {
 
     private boolean checkIfCustomerHasNoOrders(Customer customer) {
         List<Order> list = orderDatabase.get(customer);
-        return list.isEmpty();
+        return list == null;
     }
 
     private void validateCustomer(Optional<Customer> customer) {

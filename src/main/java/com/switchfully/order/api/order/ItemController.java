@@ -38,7 +38,7 @@ public class ItemController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(produces = "application/json", value = "items")
+    @GetMapping(produces = "application/json", value = "")
     public List<ItemDTO> getAllItems(@RequestHeader(required = false) String authorization) {
         myLogger.info("Retrieving All the Items from the Database.");
         securityService.validateUser(authorization, CAN_RETRIEVE_ALL_ITEMS);

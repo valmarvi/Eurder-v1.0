@@ -1,7 +1,6 @@
 package com.switchfully.order.api.order;
 
 import com.switchfully.order.service.order.OrderService;
-import com.switchfully.order.service.support.dto.order.ItemGroupDTO;
 import com.switchfully.order.service.support.wrapper.OrderWrapper;
 import com.switchfully.order.service.user.SecurityService;
 import org.slf4j.Logger;
@@ -9,8 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static com.switchfully.order.domain.models.user.Feature.CAN_ORDER_ITEMS;
 
@@ -32,7 +29,7 @@ public class OrderController {
     public void createOrder(@RequestBody OrderWrapper orderWrapper,
                             @RequestHeader(required = false) String authorization){
         myLogger.info("Adding a New Order to the Database.");
-//        securityService.validateUser(authorization, CAN_ORDER_ITEMS);
+        securityService.validateUser(authorization, CAN_ORDER_ITEMS);
         orderService.createOrder(orderWrapper);
     }
 }

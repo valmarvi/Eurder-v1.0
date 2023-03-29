@@ -30,8 +30,6 @@ public class ItemRepository {
                 .findFirst();
     }
 
-
-
     private void initializeDummyData() {
         Item iphone = new Item("iPhone 15", "A high-quality Smartphone", 1500, 50);
         Item ipad = new Item("iPad 2025", "A premium Tablet", 750, 25);

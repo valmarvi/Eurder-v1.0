@@ -40,6 +40,10 @@ public class CustomerRepository {
                 .findFirst();
     }
 
+    public String getCustomerIdByIndex(int index) {
+        return customerDatabase.get(index).getId();
+    }
+
     private void initializeDummyData() {
         Customer bigSpender = new Customer.CustomerBuilder()
                 .withFirstName("John")
@@ -66,9 +70,5 @@ public class CustomerRepository {
         customerDatabase.add(bigSpender);
         customerDatabase.add(mediumSpender);
         customerDatabase.add(lowSpender);
-    }
-
-    public String getByIndex(int index) {
-        return customerDatabase.get(index).getId();
     }
 }

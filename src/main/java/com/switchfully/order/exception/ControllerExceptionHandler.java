@@ -10,11 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.webjars.NotFoundException;
 
 import java.io.IOException;
 
-import static jakarta.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
-import static jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN;
+import static jakarta.servlet.http.HttpServletResponse.*;
 
 @ControllerAdvice
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
@@ -38,7 +38,15 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UnauthorizedAccessException.class)
     protected void unauthorizedAccessException(UnauthorizedAccessException ex,
                                                HttpServletResponse response) throws IOException {
+        logger.error(ex.getMessage());
         response.sendError(SC_FORBIDDEN, ex.getMessage());
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    protected void notFoundException(NotFoundException ex,
+                                     HttpServletResponse response) throws IOException {
+        logger.error(ex.getMessage());
+        response.sendError(SC_NOT_FOUND, ex.getMessage());
     }
 
     @ExceptionHandler(ItemNotFoundException.class)

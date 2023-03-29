@@ -1,6 +1,5 @@
 package com.switchfully.order.api.user;
 
-import com.switchfully.order.domain.models.user.Feature;
 import com.switchfully.order.service.user.CustomerService;
 import com.switchfully.order.service.support.dto.user.CustomerDTO;
 import com.switchfully.order.service.support.wrapper.CustomerWrapper;
@@ -28,14 +27,14 @@ public class CustomerController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(consumes = "application/json", value = "")
+    @PostMapping(consumes = "application/json")
     public void createCustomer(@RequestBody CustomerWrapper customerWrapper){
         myLogger.info("Adding a New Customer to the Database.");
         customerService.createCustomer(customerWrapper);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(produces = "application/json", value = "customers")
+    @GetMapping(produces = "application/json")
     public List<CustomerDTO> getAllCustomers(@RequestHeader(required = false) String authorization){
         myLogger.info("Retrieving all Customers.");
         securityService.validateUser(authorization, CAN_RETRIEVE_ALL_CUSTOMERS);
