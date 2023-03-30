@@ -30,7 +30,7 @@ class ItemControllerTest {
         //Given
         CreateItemDTO createItemDTO = new CreateItemDTO("iPad Mini", "The best solution for compact",
                 450, 5);
-        itemRepository.createItem(createItemMapper.toCreateItem(createItemDTO));
+        itemRepository.createItem(createItemMapper.toItem(createItemDTO));
 
         //When  //Then
         RestAssured.given()

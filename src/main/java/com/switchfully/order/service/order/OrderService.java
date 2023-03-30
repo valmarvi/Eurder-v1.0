@@ -32,12 +32,16 @@ public class OrderService {
     }
 
     public OrderDTOWrapper createOrder(OrderWrapper orderWrapper) {
-        List<ItemGroup> itemGroupList = orderWrapper.getItemGroupListDTO().stream()
-                .map(itemGroupDTO -> itemGroupRepository.createItemGroup(itemGroupDTO.getItemId(), itemGroupDTO.getAmount()))
-                .toList();
+        List<ItemGroup> itemGroupList = unwrapOrderWrapperAndCreateItemGroups(orderWrapper);
         Order order = orderRepository.createOrder(orderWrapper.getCustomerId(), itemGroupList);
         String customerId = orderWrapper.getCustomerId();
         Customer customer = customerRepository.getCustomerById(customerId).get();
         return new OrderDTOWrapper(customerMapper.toCustomerDTO(customer) ,orderMapper.toOrderDTO(order));
+    }
+
+    private List<ItemGroup> unwrapOrderWrapperAndCreateItemGroups(OrderWrapper orderWrapper) {
+        return orderWrapper.getItemGroupListDTO().stream()
+                .map(itemGroupDTO -> itemGroupRepository.createItemGroup(itemGroupDTO.getItemId(), itemGroupDTO.getAmount()))
+                .toList();
     }
 }

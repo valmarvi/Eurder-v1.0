@@ -24,7 +24,7 @@ public class ItemService {
 
     public void createItem(CreateItemDTO createItemDTO) {
         validateItem(createItemDTO);
-        Item item = createItemMapper.toCreateItem(createItemDTO);
+        Item item = createItemMapper.toItem(createItemDTO);
         itemRepository.createItem(item);
     }
 
@@ -33,13 +33,17 @@ public class ItemService {
     }
 
     private void validateItem(CreateItemDTO createItemDTO) {
-        if (createItemDTO == null) {
-            throw new IllegalArgumentException("Create Item data must be filled.");
-        }
+        validateIfCreateItemDTOIsNull(createItemDTO);
         validateName(createItemDTO.getName());
         validateDescription(createItemDTO.getDescription());
         validatePrice(createItemDTO.getPrice());
         validateStockAmount(createItemDTO.getStockAmount());
+    }
+
+    private static void validateIfCreateItemDTOIsNull(CreateItemDTO createItemDTO) {
+        if (createItemDTO == null) {
+            throw new IllegalArgumentException("Create Item data must be filled");
+        }
     }
 
     private void validateName(String name) {
@@ -65,6 +69,4 @@ public class ItemService {
             throw new IllegalArgumentException("The Stock Amount must be greater than 0");
         }
     }
-
-
 }

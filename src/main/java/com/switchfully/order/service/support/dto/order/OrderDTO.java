@@ -1,7 +1,5 @@
 package com.switchfully.order.service.support.dto.order;
 
-import com.switchfully.order.domain.models.order.ItemGroup;
-
 import java.util.List;
 
 public class OrderDTO {
