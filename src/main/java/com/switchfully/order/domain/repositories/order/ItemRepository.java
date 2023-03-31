@@ -27,7 +27,7 @@ public class ItemRepository {
     public List<Item> getAllItems(Optional<String> stockUrgencyIndicator) {
         return stockUrgencyIndicator.map(s -> itemDatabase
                 .stream()
-                .sorted(Comparator.comparing(Item::getStockUrgencyIndicator))
+                .sorted(Comparator.comparing(item1 -> item1.getStockUrgencyIndicator()))
                 .toList()
                 .stream()
                 .filter(item -> item.getStockUrgencyIndicator().toString().equals(s))

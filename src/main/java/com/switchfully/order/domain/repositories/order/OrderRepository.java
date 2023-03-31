@@ -11,6 +11,7 @@ import org.webjars.NotFoundException;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Repository
@@ -41,20 +42,21 @@ public class OrderRepository {
                 .orElseThrow(() -> new NotFoundException("No Orders found for the provided customer"));
     }
 
-    public List<Order> getOrderByShippingDate(LocalDate localDate) {
-        List<Order> fullOrderList = orderDatabase
-                .values()
+    public Map<Customer, List<Order>> getOrderByShippingDate(LocalDate shippingDate) {
+        return orderDatabase.entrySet()
                 .stream()
-                .flatMap(Collection::stream)
-                .toList();
-
-        return fullOrderList
-                .stream()
-                .filter(order -> order.getItemGroupList()
-                        .stream()
-                        .anyMatch(itemGroup -> itemGroup.getShippingDate().equals(localDate)))
-                .toList();
+                .map(entry -> {
+                    Customer customer = entry.getKey();
+                    List<Order> orders = entry.getValue();
+                    List<Order> filteredOrders = orders.stream()
+                            .filter(order -> order.getItemGroupList().stream()
+                                    .anyMatch(itemGroup -> itemGroup.getShippingDate().equals(shippingDate)))
+                            .toList();
+                    return Map.entry(customer, filteredOrders);
+                })
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
+
 
     private void addOrderToDatabase(Customer customer, Order order) {
         if (checkIfCustomerHasNoOrders(customer)) {

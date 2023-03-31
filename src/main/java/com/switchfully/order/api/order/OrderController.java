@@ -1,8 +1,11 @@
 package com.switchfully.order.api.order;
 
+import com.switchfully.order.domain.models.order.Order;
+import com.switchfully.order.domain.models.user.Customer;
 import com.switchfully.order.service.order.OrderService;
 import com.switchfully.order.service.support.dto.order.OrderDTO;
 import com.switchfully.order.service.support.dto.order.OrderReportDTO;
+import com.switchfully.order.service.support.dto.user.CustomerDTO;
 import com.switchfully.order.service.support.wrapper.OrderDTOWrapper;
 import com.switchfully.order.service.support.wrapper.OrderWrapper;
 import com.switchfully.order.service.user.SecurityService;
@@ -16,6 +19,7 @@ import javax.naming.AuthenticationException;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import static com.switchfully.order.domain.models.user.Feature.*;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -57,8 +61,8 @@ public class OrderController {
     }
 
     @ResponseStatus(OK)
-    @GetMapping(consumes = "application/json", produces = "application/json")
-    public List<OrderDTO> getOrderByShippingDate(@RequestParam(required = false) LocalDate localDate) {
-        return orderService.getOrderByShippingDate(localDate);
+    @GetMapping(produces = "application/json", value = "shippingTomorrow")
+    public Map<CustomerDTO, List<OrderDTO>> getOrderByShippingDate() {
+        return orderService.getOrderByShippingDate(LocalDate.now().plusDays(1));
     }
 }

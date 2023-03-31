@@ -1,5 +1,8 @@
 package com.switchfully.order.domain.models.user;
 
+import com.switchfully.order.domain.models.order.Order;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.switchfully.order.domain.models.user.Feature.*;
@@ -7,12 +10,14 @@ import static com.switchfully.order.domain.models.user.Feature.*;
 public class Customer extends User{
     private final Address address;
     private final String phoneNumber;
+//    private List<Order> orderList;
 
     private Customer(String firstName, String lastName, String email, Address address, String phoneNumber) {
         super(firstName, lastName, email);
         featureList = List.of(CAN_ORDER_ITEMS, CAN_RETRIEVE_ALL_ITEMS, CAN_RETRIEVE_ORDERS);
         this.address = address;
         this.phoneNumber = phoneNumber;
+//        this.orderList = new ArrayList<>();
     }
 
     public Address getAddress() {
@@ -22,6 +27,14 @@ public class Customer extends User{
     public String getPhoneNumber() {
         return phoneNumber;
     }
+
+//    public void addOrder(Order order) {
+//        orderList.add(order);
+//    }
+//
+//    public List<Order> getOrderList() {
+//        return orderList;
+//    }
 
     @Override
     public boolean canHaveAccessTo(Feature feature) {

@@ -8,6 +8,8 @@ import com.switchfully.order.domain.repositories.order.OrderRepository;
 import com.switchfully.order.domain.repositories.user.CustomerRepository;
 import com.switchfully.order.service.support.dto.order.OrderDTO;
 import com.switchfully.order.service.support.dto.order.OrderReportDTO;
+import com.switchfully.order.service.support.dto.order.OrdersByShippingDateMapper;
+import com.switchfully.order.service.support.dto.user.CustomerDTO;
 import com.switchfully.order.service.support.mapper.order.OrderMapper;
 import com.switchfully.order.service.support.mapper.user.CustomerMapper;
 import com.switchfully.order.service.support.wrapper.OrderDTOWrapper;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderService {
@@ -24,14 +27,17 @@ public class OrderService {
     private final OrderMapper orderMapper;
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
+    private final OrdersByShippingDateMapper ordersByShippingDateMapper;
 
     public OrderService(OrderRepository orderRepository, ItemGroupRepository itemGroupRepository,
-                        OrderMapper orderMapper, CustomerRepository customerRepository, CustomerMapper customerMapper) {
+                        OrderMapper orderMapper, CustomerRepository customerRepository, CustomerMapper customerMapper,
+                        OrdersByShippingDateMapper ordersByShippingDateMapper) {
         this.orderRepository = orderRepository;
         this.itemGroupRepository = itemGroupRepository;
         this.orderMapper = orderMapper;
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
+        this.ordersByShippingDateMapper = ordersByShippingDateMapper;
     }
 
     public OrderDTOWrapper createOrder(OrderWrapper orderWrapper) {
@@ -48,9 +54,9 @@ public class OrderService {
         return new OrderReportDTO(orderDTOList, getTotalPrice(orderDTOList));
     }
 
-    public List<OrderDTO> getOrderByShippingDate(LocalDate localDate) {
-        List<Order> orderList = orderRepository.getOrderByShippingDate(localDate);
-        return orderMapper.toOrderListDTO(orderList);
+    public Map<CustomerDTO, List<OrderDTO>> getOrderByShippingDate(LocalDate shippingDate) {
+        Map<Customer, List<Order>> orderByShippingDate = orderRepository.getOrderByShippingDate(shippingDate);
+        return ordersByShippingDateMapper.toGetOrderByShippingDateDTO(orderByShippingDate);
     }
 
     private Double getTotalPrice(List<OrderDTO> orderDTOList) {

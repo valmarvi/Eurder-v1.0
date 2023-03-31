@@ -1,5 +1,7 @@
 package com.switchfully.order.domain.models.order;
 
+import com.switchfully.order.domain.models.user.Customer;
+
 import java.util.List;
 import java.util.UUID;
 
