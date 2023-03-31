@@ -31,7 +31,7 @@ public class SecurityService {
         this.customerRepository = customerRepository;
     }
 
-    public void validateUser(String authorization, Feature feature) {
+    public boolean validateUser(String authorization, Feature feature) {
         validateAuthorization(authorization);
         String username = getUsernamePassword(authorization).getUsername();
         String password = getUsernamePassword(authorization).getPassword();
@@ -39,6 +39,7 @@ public class SecurityService {
         validateUser(username, user);
         validatePassword(username, password);
         validateAccess(user, feature, username);
+        return true;
     }
 
     private UserCredentials getUsernamePassword(String authorization) {

@@ -1,7 +1,9 @@
 package com.switchfully.order.service.support.dto.order;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.List;
+@JsonPropertyOrder({ "itemGroupDTOList", "totalPrice"})
 public class OrderDTO {
     private final List<ItemGroupDTO> itemGroupDTOList;
     private final double totalPrice;

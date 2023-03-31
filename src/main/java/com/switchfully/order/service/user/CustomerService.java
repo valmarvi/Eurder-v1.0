@@ -11,8 +11,10 @@ import com.switchfully.order.service.support.mapper.user.CustomerMapper;
 import com.switchfully.order.service.support.mapper.user.UserCredentialsMapper;
 import com.switchfully.order.service.support.wrapper.CustomerWrapper;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerService {
@@ -46,18 +48,25 @@ public class CustomerService {
     }
 
     public CustomerDTO getCustomerById(String customerId) {
-        return customerMapper.toCustomerDTO(customerRepository.getCustomerById(customerId).get());
+        Optional<Customer> customerOptional = customerRepository.getCustomerById(customerId);
+        Customer customer = customerOptional
+                .orElseThrow(() -> new NotFoundException("No Customer Found with the Provided ID"));
+        return customerMapper.toCustomerDTO(customer);
     }
 
     private void validateCustomerWrapper(CustomerWrapper customerWrapper) {
-        if (customerWrapper.getCreateCustomerDTO() == null || customerWrapper.getUserCredentials() == null) {
-            throw new IllegalArgumentException("Admin data and UserCredentials data must be filled.");
-        }
+        validateCustomWrapperNull(customerWrapper);
         validateFirstName(customerWrapper.getCreateCustomerDTO().getFirstName());
         validateLastName(customerWrapper.getCreateCustomerDTO().getLastName());
         validateMail(customerWrapper.getCreateCustomerDTO().getEmail());
         validatePhoneNumber(customerWrapper.getCreateCustomerDTO().getPhoneNumber());
         validateAddress(customerWrapper.getCreateCustomerDTO().getAddress());
+    }
+
+    private static void validateCustomWrapperNull(CustomerWrapper customerWrapper) {
+        if (customerWrapper.getCreateCustomerDTO() == null || customerWrapper.getUserCredentials() == null) {
+            throw new IllegalArgumentException("Admin data and UserCredentials data must be filled.");
+        }
     }
 
     private void validateFirstName(String firstName) {

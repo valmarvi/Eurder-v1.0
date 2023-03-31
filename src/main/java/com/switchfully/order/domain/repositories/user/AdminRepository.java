@@ -15,8 +15,7 @@ public class AdminRepository {
         initializeDummyData();
     }
 
-    private void initializeDummyData() {
-        Admin admin = new Admin("Louie", "Charles","l.charles@gmail.com");
+    public void createAdmin(Admin admin) {
         adminDatabase.add(admin);
     }
 
@@ -28,5 +27,10 @@ public class AdminRepository {
         return adminDatabase.stream()
                 .filter(admin -> admin.getId().equals(adminId))
                 .findFirst();
+    }
+
+    private void initializeDummyData() {
+        Admin admin = new Admin("Louie", "Charles", "l.charles@gmail.com");
+        adminDatabase.add(admin);
     }
 }

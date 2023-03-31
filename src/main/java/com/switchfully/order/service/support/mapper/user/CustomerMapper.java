@@ -8,15 +8,6 @@ import java.util.List;
 
 @Component
 public class CustomerMapper {
-    public Customer toCustomer(CustomerDTO customerDTO) {
-        return new Customer.CustomerBuilder()
-                .withFirstName(customerDTO.getFirstName())
-                .withLastName(customerDTO.getLastName())
-                .withEmail(customerDTO.getEmail())
-                .withAddress(customerDTO.getAddress())
-                .withPhoneNumber(customerDTO.getPhoneNumber())
-                .build();
-    }
 
     public CustomerDTO toCustomerDTO(Customer customer) {
         return new CustomerDTO.CustomerDTOBuilder()

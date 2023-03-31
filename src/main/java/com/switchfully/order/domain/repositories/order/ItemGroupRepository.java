@@ -2,8 +2,9 @@ package com.switchfully.order.domain.repositories.order;
 
 import com.switchfully.order.domain.models.order.Item;
 import com.switchfully.order.domain.models.order.ItemGroup;
-import com.switchfully.order.exception.exceptions.ItemNotFoundException;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.webjars.NotFoundException;
 
 import java.util.Optional;
 
@@ -24,9 +25,10 @@ public class ItemGroupRepository {
         return itemGroup;
     }
 
+    @ExceptionHandler
     private void validateItem(Optional<Item> item) {
         if (item.isEmpty()) {
-            throw new ItemNotFoundException("No Item found with the specified ID");
+            throw new NotFoundException("No Item found with the specified ID");
         }
     }
 

@@ -4,8 +4,8 @@ import com.switchfully.order.domain.models.user.Customer;
 import com.switchfully.order.domain.models.order.ItemGroup;
 import com.switchfully.order.domain.models.order.Order;
 import com.switchfully.order.domain.repositories.user.CustomerRepository;
-import com.switchfully.order.exception.exceptions.ItemNotFoundException;
 import org.springframework.stereotype.Repository;
+import org.webjars.NotFoundException;
 
 import java.util.*;
 
@@ -49,7 +49,7 @@ public class OrderRepository {
 
     private void validateCustomer(Optional<Customer> customer) {
         if (customer.isEmpty()) {
-            throw new ItemNotFoundException("No Customer found with the specified ID");
+            throw new NotFoundException("No Customer found with the specified ID");
         }
     }
 }

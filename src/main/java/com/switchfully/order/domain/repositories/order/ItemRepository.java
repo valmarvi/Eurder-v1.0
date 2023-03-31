@@ -1,7 +1,6 @@
 package com.switchfully.order.domain.repositories.order;
 
 import com.switchfully.order.domain.models.order.Item;
-import com.switchfully.order.exception.exceptions.ItemNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
