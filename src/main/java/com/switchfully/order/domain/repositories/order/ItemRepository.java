@@ -1,9 +1,13 @@
 package com.switchfully.order.domain.repositories.order;
 
 import com.switchfully.order.domain.models.order.Item;
+import com.switchfully.order.service.support.dto.order.ItemDTO;
+import com.switchfully.order.service.support.dto.order.UpdateItemDTO;
 import org.springframework.stereotype.Repository;
+import org.webjars.NotFoundException;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,14 +24,21 @@ public class ItemRepository {
         itemDatabase.add(item);
     }
 
-    public List<Item> getAllItems() {
-        return itemDatabase;
+    public List<Item> getAllItems(Optional<String> stockUrgencyIndicator) {
+        return stockUrgencyIndicator.map(s -> itemDatabase
+                .stream()
+                .sorted(Comparator.comparing(Item::getStockUrgencyIndicator))
+                .toList()
+                .stream()
+                .filter(item -> item.getStockUrgencyIndicator().toString().equals(s))
+                .toList()).orElse(itemDatabase);
     }
 
-    public Optional<Item> getItemByID(String itemId) {
+    public Item getItemByID(String itemId) {
         return itemDatabase.stream()
                 .filter(item -> item.getId().equals(itemId))
-                .findFirst();
+                .findFirst()
+                .orElseThrow(()->new NotFoundException("No Item found with the specified ID"));
     }
 
     private void initializeDummyData() {

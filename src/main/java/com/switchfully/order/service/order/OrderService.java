@@ -6,12 +6,15 @@ import com.switchfully.order.domain.models.user.Customer;
 import com.switchfully.order.domain.repositories.order.ItemGroupRepository;
 import com.switchfully.order.domain.repositories.order.OrderRepository;
 import com.switchfully.order.domain.repositories.user.CustomerRepository;
+import com.switchfully.order.service.support.dto.order.OrderDTO;
+import com.switchfully.order.service.support.dto.order.OrderReportDTO;
 import com.switchfully.order.service.support.mapper.order.OrderMapper;
 import com.switchfully.order.service.support.mapper.user.CustomerMapper;
 import com.switchfully.order.service.support.wrapper.OrderDTOWrapper;
 import com.switchfully.order.service.support.wrapper.OrderWrapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -36,7 +39,26 @@ public class OrderService {
         Order order = orderRepository.createOrder(orderWrapper.getCustomerId(), itemGroupList);
         String customerId = orderWrapper.getCustomerId();
         Customer customer = customerRepository.getCustomerById(customerId).get();
-        return new OrderDTOWrapper(customerMapper.toCustomerDTO(customer) ,orderMapper.toOrderDTO(order));
+        return new OrderDTOWrapper(customerMapper.toCustomerDTO(customer), orderMapper.toOrderDTO(order));
+    }
+
+    public OrderReportDTO getOrdersByCustomer(String customerId) {
+        List<Order> ordersByCustomer = orderRepository.getOrdersByCustomer(customerId);
+        List<OrderDTO> orderDTOList = orderMapper.toOrderListDTO(ordersByCustomer);
+        return new OrderReportDTO(orderDTOList, getTotalPrice(orderDTOList));
+    }
+
+    public List<OrderDTO> getOrderByShippingDate(LocalDate localDate) {
+        List<Order> orderList = orderRepository.getOrderByShippingDate(localDate);
+        return orderMapper.toOrderListDTO(orderList);
+    }
+
+    private Double getTotalPrice(List<OrderDTO> orderDTOList) {
+               return orderDTOList
+                .stream()
+                .map(OrderDTO::getTotalPrice)
+                .mapToDouble(Double::doubleValue)
+                .sum();
     }
 
     private List<ItemGroup> unwrapOrderWrapperAndCreateItemGroups(OrderWrapper orderWrapper) {

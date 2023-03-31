@@ -10,7 +10,8 @@ import java.util.stream.Collectors;
 @Component
 public class ItemMapper {
     public ItemDTO toItemDTO(Item item) {
-        return new ItemDTO(item.getId(), item.getName(), item.getDescription(), item.getPrice(), item.getStockAmount());
+        return new ItemDTO(item.getId(), item.getName(), item.getDescription(), item.getPrice(), item.getStockAmount(),
+                item.getStockUrgencyIndicator());
     }
 
     public List<ItemDTO> toItemDTOList(List<Item> itemList) {

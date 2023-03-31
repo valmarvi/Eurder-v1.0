@@ -19,6 +19,13 @@ public class OrderMapper {
     public OrderDTO toOrderDTO(Order order) {
         List<ItemGroup> itemGroupList = order.getItemGroupList();
         List<ItemGroupDTO> itemGroupDTOList = itemGroupMapper.toItemGroupDTOList(itemGroupList);
-        return new OrderDTO(itemGroupDTOList);
+        return new OrderDTO(order.getId(), itemGroupDTOList);
+    }
+
+    public List<OrderDTO> toOrderListDTO(List<Order> orderList) {
+        return orderList
+                .stream()
+                .map(this::toOrderDTO)
+                .toList();
     }
 }

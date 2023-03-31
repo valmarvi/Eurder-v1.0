@@ -17,22 +17,21 @@ public class ItemGroupRepository {
     }
 
     public ItemGroup createItemGroup(String itemId, int amount) {
-        Optional<Item> item = itemRepository.getItemByID(itemId);
-        validateItem(item);
+        Item item = itemRepository.getItemByID(itemId);
+//        validateItem(item);
         double itemGroupPrice = calculateItemGroupPrice(amount, item);
-        ItemGroup itemGroup = new ItemGroup(item.get().getId(), item.get().getName(),amount, item.get().getStockAmount(), itemGroupPrice);
-        item.get().changeStockAmount(amount);
+        ItemGroup itemGroup = new ItemGroup(item.getId(), item.getName(),amount, item.getStockAmount(), itemGroupPrice);
+        item.changeStockAmount(amount);
         return itemGroup;
     }
 
-    @ExceptionHandler
-    private void validateItem(Optional<Item> item) {
-        if (item.isEmpty()) {
-            throw new NotFoundException("No Item found with the specified ID");
-        }
-    }
+//    private void validateItem(Optional<Item> item) {
+//        if (item.isEmpty()) {
+//            throw new NotFoundException("No Item found with the specified ID");
+//        }
+//    }
 
-    private static double calculateItemGroupPrice(int amount, Optional<Item> item) {
-        return amount * item.get().getPrice();
+    private static double calculateItemGroupPrice(int amount, Item item) {
+        return amount * item.getPrice();
     }
 }

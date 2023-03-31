@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
+import java.util.Optional;
+
 import static io.restassured.http.ContentType.JSON;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -46,7 +48,7 @@ class ItemControllerTest {
                 .statusCode(HttpStatus.CREATED.value());
 
         //Then
-        Assertions.assertThat(itemRepository.getAllItems().size()).isEqualTo(7);
+        Assertions.assertThat(itemRepository.getAllItems(Optional.empty()).size()).isEqualTo(7);
     }
 
     @Test

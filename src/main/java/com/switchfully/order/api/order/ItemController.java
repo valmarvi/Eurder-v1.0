@@ -1,6 +1,9 @@
 package com.switchfully.order.api.order;
 
+import com.switchfully.order.domain.models.order.Order;
 import com.switchfully.order.service.order.ItemService;
+import com.switchfully.order.service.support.dto.order.OrderDTO;
+import com.switchfully.order.service.support.dto.order.UpdateItemDTO;
 import com.switchfully.order.service.support.dto.order.ItemDTO;
 import com.switchfully.order.service.user.SecurityService;
 import com.switchfully.order.service.support.dto.order.CreateItemDTO;
@@ -10,10 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
-import static com.switchfully.order.domain.models.user.Feature.CAN_CREATE_ITEM;
-import static com.switchfully.order.domain.models.user.Feature.CAN_RETRIEVE_ALL_ITEMS;
+import static com.switchfully.order.domain.models.user.Feature.*;
 
 @RestController
 @RequestMapping(value = "items")
@@ -31,7 +35,8 @@ public class ItemController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = "application/json", value = "")
-    public void createItem(@RequestBody CreateItemDTO createItemDTO, @RequestHeader(required = false) String authorization){
+    public void createItem(@RequestBody CreateItemDTO createItemDTO,
+                           @RequestHeader(required = false) String authorization) {
         myLogger.info("Adding a New Item to the Database.");
         securityService.validateUser(authorization, CAN_CREATE_ITEM);
         itemService.createItem(createItemDTO);
@@ -39,9 +44,20 @@ public class ItemController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(produces = "application/json", value = "")
-    public List<ItemDTO> getAllItems(@RequestHeader(required = false) String authorization) {
+    public List<ItemDTO> getAllItems(@RequestHeader(required = false) String authorization,
+                                     @RequestParam(required = false) Optional<String> stockUrgencyIndicator) {
         myLogger.info("Retrieving All the Items from the Database.");
         securityService.validateUser(authorization, CAN_RETRIEVE_ALL_ITEMS);
-        return itemService.getAllItems();
+        return itemService.getAllItems(stockUrgencyIndicator);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(consumes = "application/json", produces = "application/json", path = "{itemId}")
+    public ItemDTO updateItem(@PathVariable String itemId,
+                              @RequestHeader(required = false) String authorization,
+                              @RequestBody UpdateItemDTO updateItemDTO) {
+        myLogger.info("Retrieving All the Items from the Database.");
+        securityService.validateUser(authorization, CAN_UPDATE_ITEMS);
+        return itemService.updateItem(itemId, updateItemDTO);
     }
 }

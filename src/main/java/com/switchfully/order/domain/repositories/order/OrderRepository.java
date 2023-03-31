@@ -1,13 +1,17 @@
 package com.switchfully.order.domain.repositories.order;
 
+import com.switchfully.order.domain.models.order.Item;
 import com.switchfully.order.domain.models.user.Customer;
 import com.switchfully.order.domain.models.order.ItemGroup;
 import com.switchfully.order.domain.models.order.Order;
 import com.switchfully.order.domain.repositories.user.CustomerRepository;
+import com.switchfully.order.service.support.wrapper.OrderReportWrapper;
 import org.springframework.stereotype.Repository;
 import org.webjars.NotFoundException;
 
+import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class OrderRepository {
@@ -27,6 +31,31 @@ public class OrderRepository {
         return order;
     }
 
+    public List<Order> getOrdersByCustomer(String customerId) {
+        return orderDatabase
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getKey().getId().equals(customerId))
+                .map(Map.Entry::getValue)
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("No Orders found for the provided customer"));
+    }
+
+    public List<Order> getOrderByShippingDate(LocalDate localDate) {
+        List<Order> fullOrderList = orderDatabase
+                .values()
+                .stream()
+                .flatMap(Collection::stream)
+                .toList();
+
+        return fullOrderList
+                .stream()
+                .filter(order -> order.getItemGroupList()
+                        .stream()
+                        .anyMatch(itemGroup -> itemGroup.getShippingDate().equals(localDate)))
+                .toList();
+    }
+
     private void addOrderToDatabase(Customer customer, Order order) {
         if (checkIfCustomerHasNoOrders(customer)) {
             List<Order> orderList = new ArrayList<>();
@@ -39,6 +68,7 @@ public class OrderRepository {
                 .filter(entry -> entry.getKey().getId().equals(customer.getId()))
                 .map(Map.Entry::getValue)
                 .findFirst().get();
+
         orderList.add(order);
     }
 

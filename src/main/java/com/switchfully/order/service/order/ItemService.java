@@ -4,11 +4,13 @@ import com.switchfully.order.domain.models.order.Item;
 import com.switchfully.order.domain.repositories.order.ItemRepository;
 import com.switchfully.order.service.support.dto.order.CreateItemDTO;
 import com.switchfully.order.service.support.dto.order.ItemDTO;
+import com.switchfully.order.service.support.dto.order.UpdateItemDTO;
 import com.switchfully.order.service.support.mapper.order.CreateItemMapper;
 import com.switchfully.order.service.support.mapper.order.ItemMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ItemService {
@@ -28,8 +30,17 @@ public class ItemService {
         itemRepository.createItem(item);
     }
 
-    public List<ItemDTO> getAllItems() {
-        return itemMapper.toItemDTOList(itemRepository.getAllItems());
+    public List<ItemDTO> getAllItems(Optional<String> stockUrgencyIndicator) {
+        return itemMapper.toItemDTOList(itemRepository.getAllItems(stockUrgencyIndicator));
+    }
+
+    public ItemDTO updateItem(String itemId, UpdateItemDTO updateItemDTO) {
+        Item item = itemRepository.getItemByID(itemId);
+        item.setName(updateItemDTO.getName());
+        item.setDescription(updateItemDTO.getDescription());
+        item.setPrice(updateItemDTO.getPrice());
+        item.setStockAmount(updateItemDTO.getStockAmount());
+        return itemMapper.toItemDTO(item);
     }
 
     private void validateItem(CreateItemDTO createItemDTO) {

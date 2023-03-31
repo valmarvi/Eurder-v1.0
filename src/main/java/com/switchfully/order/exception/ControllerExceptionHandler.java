@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.webjars.NotFoundException;
 
+import javax.naming.AuthenticationException;
 import java.io.IOException;
 
 import static jakarta.servlet.http.HttpServletResponse.*;
@@ -45,5 +46,12 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
                                      HttpServletResponse response) throws IOException {
         logger.error(ex.getMessage());
         response.sendError(SC_NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    protected void notFoundException(AuthenticationException ex,
+                                     HttpServletResponse response) throws IOException {
+        logger.error(ex.getMessage());
+        response.sendError(SC_FORBIDDEN, ex.getMessage());
     }
 }

@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.naming.AuthenticationException;
 import java.util.Base64;
 
 import static java.lang.String.format;
@@ -82,6 +83,14 @@ public class SecurityService {
             message = format("User %s does not have access to %s", username, feature);
             logger.error(message);
             throw new UnauthorizedAccessException(message);
+        }
+    }
+
+    public void authenticateUser(String customerId, String authorization) throws AuthenticationException {
+        String username = getUsernamePassword(authorization).getUsername();
+        String authorizationUserId = userCredentialsRepository.getUserByUsername(username);
+        if (!customerId.equals(authorizationUserId)) {
+            throw new AuthenticationException("Authentication Failed");
         }
     }
 }

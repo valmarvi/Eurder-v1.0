@@ -72,7 +72,7 @@ class OrderServiceTest {
 
     Order order = new Order(itemGroupList);
 
-    OrderDTO orderDTO = new OrderDTO(itemGroupDTOList);
+    OrderDTO orderDTO = new OrderDTO(order.getId(), itemGroupDTOList);
 
     @BeforeEach
     void setupOrderService() {

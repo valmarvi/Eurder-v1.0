@@ -2,8 +2,7 @@ package com.switchfully.order.domain.models.user;
 
 import java.util.List;
 
-import static com.switchfully.order.domain.models.user.Feature.CAN_ORDER_ITEMS;
-import static com.switchfully.order.domain.models.user.Feature.CAN_RETRIEVE_ALL_ITEMS;
+import static com.switchfully.order.domain.models.user.Feature.*;
 
 public class Customer extends User{
     private final Address address;
@@ -11,7 +10,7 @@ public class Customer extends User{
 
     private Customer(String firstName, String lastName, String email, Address address, String phoneNumber) {
         super(firstName, lastName, email);
-        featureList = List.of(CAN_ORDER_ITEMS, CAN_RETRIEVE_ALL_ITEMS);
+        featureList = List.of(CAN_ORDER_ITEMS, CAN_RETRIEVE_ALL_ITEMS, CAN_RETRIEVE_ORDERS);
         this.address = address;
         this.phoneNumber = phoneNumber;
     }

@@ -1,6 +1,7 @@
 package com.switchfully.order.service.order;
 
 import com.switchfully.order.domain.models.order.Item;
+import com.switchfully.order.domain.models.order.StockUrgencyIndicator;
 import com.switchfully.order.domain.repositories.order.ItemRepository;
 import com.switchfully.order.service.support.dto.order.CreateItemDTO;
 import com.switchfully.order.service.support.dto.order.ItemDTO;
@@ -16,6 +17,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,7 +42,7 @@ class ItemServiceTest {
             50,10);
 
     ItemDTO itemDTO = new ItemDTO(UUID.randomUUID().toString(), "Test Item",
-            "Item to Test", 50,10);
+            "Item to Test", 50,10, StockUrgencyIndicator.STOCK_HIGH);
 
     @Test
     void createItem_Mock() {
@@ -51,16 +53,16 @@ class ItemServiceTest {
 
     @Test
     void getAllItems_Mock() {
-        itemService.getAllItems();
-        Mockito.verify(itemRepositoryMock).getAllItems();
+        itemService.getAllItems(Optional.empty());
+        Mockito.verify(itemRepositoryMock).getAllItems(Optional.empty());
     }
 
     @Test
     void getAllItems_Stub() {
-        Mockito.when(itemMapperMock.toItemDTOList(itemRepositoryMock.getAllItems()))
+        Mockito.when(itemMapperMock.toItemDTOList(itemRepositoryMock.getAllItems(Optional.empty())))
                 .thenReturn(List.of(itemDTO));
 
-        List<ItemDTO> itemDTOList = itemService.getAllItems();
+        List<ItemDTO> itemDTOList = itemService.getAllItems(Optional.empty());
 
         Assertions.assertThat(itemDTOList).contains(itemDTO);
     }
