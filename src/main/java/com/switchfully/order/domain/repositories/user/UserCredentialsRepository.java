@@ -1,6 +1,7 @@
 package com.switchfully.order.domain.repositories.user;
 
 import com.switchfully.order.domain.models.user.UserCredentials;
+import com.switchfully.order.exception.exceptions.UnauthorizedAccessException;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -23,21 +24,23 @@ public class UserCredentialsRepository {
         userCredentialsDatabase.put(userCredentials, userId);
     }
 
-    public UserCredentials getUserCredentials(String username) {
+    public UserCredentials getUserCredentialsByUsername(String username) {
         return userCredentialsDatabase.keySet()
                 .stream()
                 .filter(credentials -> credentials.getUsername().equals(username))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(
+                        () -> new UnauthorizedAccessException("No Credentials Found for the username " + username));
     }
 
-    public String getUser(String username) {
+    public String getUserByUsername(String username) {
         return userCredentialsDatabase.entrySet()
                 .stream()
                 .filter(entry -> entry.getKey().getUsername().equals(username))
                 .map(Map.Entry::getValue)
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(
+                        () -> new UnauthorizedAccessException("No User Found with the username " + username));
     }
 
     private void initializeDummyData() {

@@ -1,6 +1,5 @@
 package com.switchfully.order.exception;
 
-import com.switchfully.order.exception.exceptions.CustomerNotFoundException;
 import com.switchfully.order.exception.exceptions.DuplicateEmailException;
 import com.switchfully.order.exception.exceptions.UnauthorizedAccessException;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,7 +19,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final Logger logger = LoggerFactory.getLogger(ControllerExceptionHandler.class);
 
-    @ExceptionHandler(value = {IllegalArgumentException.class})
+    @ExceptionHandler(IllegalArgumentException.class)
     protected void illegalArgumentException(IllegalArgumentException ex,
                                             HttpServletResponse response) throws IOException {
         logger.error(ex.getMessage());
@@ -46,10 +45,5 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
                                      HttpServletResponse response) throws IOException {
         logger.error(ex.getMessage());
         response.sendError(SC_NOT_FOUND, ex.getMessage());
-    }
-
-    @ExceptionHandler(CustomerNotFoundException.class)
-    protected void customerNotFoundException(CustomerNotFoundException ex) {
-        logger.error(ex.getMessage());
     }
 }

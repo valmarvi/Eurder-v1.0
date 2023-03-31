@@ -73,10 +73,11 @@ class CustomerRepositoryTest {
     }
 
     @Test
-    @DisplayName("When Creating Two Customers with the Same e-mail, Throw an Exception on the Creatin of the Second")
+    @DisplayName("When Creating Two Customers with the Same e-mail, Throw an Exception on the Creation of the Second")
     void create2CustomersWithSameEmail() {
         //When //Then
         customerRepository.createCustomer(customerToTest);
-        Assertions.assertThatThrownBy(() -> customerRepository.createCustomer(anotherCustomerToTest));
+        Assertions.assertThatThrownBy(() -> customerRepository.createCustomer(anotherCustomerToTest))
+                .hasMessage("There is already a customer with the same e-mail");
     }
 }

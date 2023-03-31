@@ -33,7 +33,8 @@ class ItemControllerTest {
         itemRepository.createItem(createItemMapper.toItem(createItemDTO));
 
         //When  //Then
-        RestAssured.given()
+        RestAssured
+                .given()
                 .header("Authorization", "Basic bGNoYXJsZXM6cHdk")
                 .body(createItemDTO)
                 .contentType(JSON)
@@ -46,5 +47,21 @@ class ItemControllerTest {
 
         //Then
         Assertions.assertThat(itemRepository.getAllItems().size()).isEqualTo(7);
+    }
+
+    @Test
+    void getAllItems() {
+        //When  //Then
+        RestAssured
+                .given()
+                .auth().preemptive().basic("lcharles","pwd")
+                .contentType(JSON)
+                .accept(JSON)
+                .port(port)
+                .when()
+                .get("items")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value());
     }
 }

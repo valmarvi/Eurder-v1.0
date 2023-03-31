@@ -16,6 +16,7 @@ class ItemGroupRepositoryTest {
     @DisplayName("When Trying to Create a Item Group with a Item that Doen't Exist, Throw an Exception")
     void createItemGroup() {
         //When  //Then
-        Assertions.assertThatThrownBy(() -> itemGroupRepository.createItemGroup("a", 5));
+        Assertions.assertThatThrownBy(() -> itemGroupRepository.createItemGroup("a", 5))
+                .hasMessage("No Item found with the specified ID");
     }
 }

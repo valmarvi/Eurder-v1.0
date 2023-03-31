@@ -69,7 +69,8 @@ class ItemServiceTest {
     void validateIfCreateItemDTOIsNull() {
         CreateItemDTO nullCreateItemDTO = null;
 
-        Assertions.assertThatThrownBy(()-> itemService.createItem(nullCreateItemDTO));
+        Assertions.assertThatThrownBy(()-> itemService.createItem(nullCreateItemDTO))
+                .hasMessage("Create Item data must be filled");
     }
 
     @Test
@@ -79,8 +80,10 @@ class ItemServiceTest {
         CreateItemDTO blankNameCreateItemDTO = new CreateItemDTO("", "Item to Test",
                 50,10);
 
-        Assertions.assertThatThrownBy(()-> itemService.createItem(nullNameCreateItemDTO));
-        Assertions.assertThatThrownBy(()-> itemService.createItem(blankNameCreateItemDTO));
+        Assertions.assertThatThrownBy(()-> itemService.createItem(nullNameCreateItemDTO))
+                .hasMessage("Name must be filled");
+        Assertions.assertThatThrownBy(()-> itemService.createItem(blankNameCreateItemDTO))
+                .hasMessage("Name must be filled");
     }
 
     @Test
@@ -90,8 +93,10 @@ class ItemServiceTest {
         CreateItemDTO blankDescriptionCreateItemDTO = new CreateItemDTO("Test Item", "",
                 50,10);
 
-        Assertions.assertThatThrownBy(()-> itemService.createItem(nullDescriptionCreateItemDTO));
-        Assertions.assertThatThrownBy(()-> itemService.createItem(blankDescriptionCreateItemDTO));
+        Assertions.assertThatThrownBy(()-> itemService.createItem(nullDescriptionCreateItemDTO))
+                .hasMessage("Description must be filled");
+        Assertions.assertThatThrownBy(()-> itemService.createItem(blankDescriptionCreateItemDTO))
+                .hasMessage("Description must be filled");
     }
 
     @Test
@@ -99,7 +104,8 @@ class ItemServiceTest {
         CreateItemDTO negativePriceCreateItemDTO = new CreateItemDTO("Test Item", "Item to Test",
                 -50,10);
 
-        Assertions.assertThatThrownBy(()-> itemService.createItem(negativePriceCreateItemDTO));
+        Assertions.assertThatThrownBy(()-> itemService.createItem(negativePriceCreateItemDTO))
+                .hasMessage("The price must be greater than 0");
     }
 
     @Test
@@ -107,6 +113,7 @@ class ItemServiceTest {
         CreateItemDTO negativeStockAmountItemDTO = new CreateItemDTO("Test Item", "Item to Test",
                 50,-10);
 
-        Assertions.assertThatThrownBy(()-> itemService.createItem(negativeStockAmountItemDTO));
+        Assertions.assertThatThrownBy(()-> itemService.createItem(negativeStockAmountItemDTO))
+                .hasMessage("The Stock Amount must be greater than 0");
     }
 }

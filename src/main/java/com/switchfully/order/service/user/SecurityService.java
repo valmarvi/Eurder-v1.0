@@ -35,8 +35,7 @@ public class SecurityService {
         validateAuthorization(authorization);
         String username = getUsernamePassword(authorization).getUsername();
         String password = getUsernamePassword(authorization).getPassword();
-        User user = getUserById(userCredentialsRepository.getUser(username));
-        validateUser(username, user);
+        User user = getUserById(userCredentialsRepository.getUserByUsername(username));
         validatePassword(username, password);
         validateAccess(user, feature, username);
         return true;
@@ -56,7 +55,6 @@ public class SecurityService {
         if (customerRepository.getCustomerById(userId).isPresent()) {
             return customerRepository.getCustomerById(userId).get();
         }
-
         return null;
     }
 
@@ -69,18 +67,9 @@ public class SecurityService {
         }
     }
 
-    private void validateUser(String username, User user) {
-        String message;
-        if (user == null) {
-            message = "There is no user with the username " + username;
-            logger.error(message);
-            throw new UnauthorizedAccessException(message);
-        }
-    }
-
     private void validatePassword(String username, String password) {
         String message;
-        if (!password.equals(userCredentialsRepository.getUserCredentials(username).getPassword())) {
+        if (!password.equals(userCredentialsRepository.getUserCredentialsByUsername(username).getPassword())) {
             message = "Password does not match for user " + username;
             logger.error(message);
             throw new UnauthorizedAccessException(message);

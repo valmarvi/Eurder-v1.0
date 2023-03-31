@@ -86,14 +86,14 @@ public class CustomerService {
             throw new IllegalArgumentException("e-mail must be filled");
         }
 
-        if (!(email.matches("^(.+)@(\\S+)$"))) {
+        if (!(email.matches("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$"))) {
             throw new IllegalArgumentException("Invalid e-mail");
         }
     }
 
     private void validatePhoneNumber(String phoneNumber) {
         if (phoneNumber == null || phoneNumber.isBlank()) {
-            throw new IllegalArgumentException("First Name must be filled");
+            throw new IllegalArgumentException("Phone Number must be filled");
         }
     }
 
