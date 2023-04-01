@@ -46,6 +46,13 @@ public class OrderController {
         return orderService.createOrder(orderWrapper);
     }
 
+    @ResponseStatus(CREATED)
+    @PostMapping(produces = "application/json", value="reorder")
+    public OrderDTOWrapper reorderOrder(@RequestParam(required = false) String orderId){
+        myLogger.info("Adding a New Order to the Database Based on an Existing Order.");
+        return orderService.reorderOrder(orderId);
+    }
+
     @ResponseStatus(OK)
     @GetMapping(produces = "application/json")
     public OrderReportDTO getOrdersByCustomer(@RequestParam(required = false) String customerId,

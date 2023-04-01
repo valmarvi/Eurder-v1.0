@@ -72,4 +72,17 @@ public class OrderService {
                 .map(itemGroupDTO -> itemGroupRepository.createItemGroup(itemGroupDTO.getItemId(), itemGroupDTO.getAmount()))
                 .toList();
     }
+
+    public OrderDTOWrapper reorderOrder(String orderId) {
+        Map<Customer, Order> customerOrderEntry = orderRepository.getCustomerOrderEntryByOrderId(orderId);
+        Customer customer = customerOrderEntry.keySet().stream().findFirst().get();
+        Order order = customerOrderEntry.values().stream().findFirst().get();
+        List<ItemGroup> itemGroupList = order.getItemGroupList();
+        List<ItemGroup> itemGroupListWithUpdatedPrice = itemGroupList
+                .stream()
+                .map(itemGroup -> itemGroupRepository.createItemGroup(itemGroup.getItemId(), itemGroup.getAmount()))
+                .toList();
+        Order updatedOrder = orderRepository.createOrder(customer.getId(), itemGroupListWithUpdatedPrice);
+        return new OrderDTOWrapper(customerMapper.toCustomerDTO(customer), orderMapper.toOrderDTO(updatedOrder));
+    }
 }
