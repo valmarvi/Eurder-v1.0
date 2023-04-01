@@ -1,7 +1,5 @@
 package com.switchfully.order.api.order;
 
-import com.switchfully.order.domain.models.order.Order;
-import com.switchfully.order.domain.models.user.Customer;
 import com.switchfully.order.service.order.OrderService;
 import com.switchfully.order.service.support.dto.order.OrderDTO;
 import com.switchfully.order.service.support.dto.order.OrderReportDTO;
@@ -12,7 +10,6 @@ import com.switchfully.order.service.user.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.naming.AuthenticationException;
@@ -61,8 +58,10 @@ public class OrderController {
     }
 
     @ResponseStatus(OK)
-    @GetMapping(produces = "application/json", value = "shippingTomorrow")
-    public Map<CustomerDTO, List<OrderDTO>> getOrderByShippingDate() {
+    @GetMapping(produces = "application/json", value = "shipping-tomorrow")
+    public Map<CustomerDTO, List<OrderDTO>> getOrderByShippingDate(@RequestHeader(required = false) String authorization) {
+        myLogger.info("Retrieving all the orders that are going to be shipped tomorrow");
+        securityService.validateUser(authorization, CAN_RETRIEVE_ORDER_THAT_ARE_SHIPPED_TOMORROW);
         return orderService.getOrderByShippingDate(LocalDate.now().plusDays(1));
     }
 }

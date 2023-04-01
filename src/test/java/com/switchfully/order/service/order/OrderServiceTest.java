@@ -11,6 +11,7 @@ import com.switchfully.order.domain.repositories.user.CustomerRepository;
 import com.switchfully.order.service.support.dto.order.ItemDTO;
 import com.switchfully.order.service.support.dto.order.ItemGroupDTO;
 import com.switchfully.order.service.support.dto.order.OrderDTO;
+import com.switchfully.order.service.support.dto.order.OrdersByShippingDateMapper;
 import com.switchfully.order.service.support.dto.user.CreateCustomerDTO;
 import com.switchfully.order.service.support.dto.user.CustomerDTO;
 import com.switchfully.order.service.support.mapper.order.OrderMapper;
@@ -42,6 +43,7 @@ class OrderServiceTest {
     OrderMapper orderMapperMock;
     CustomerMapper customerMapperMock;
     OrderService orderService;
+    OrdersByShippingDateMapper ordersByShippingDateMapper;
 
     Customer customer = new Customer.CustomerBuilder()
             .withFirstName("Roger")
@@ -81,7 +83,8 @@ class OrderServiceTest {
         customerRepositoryMock = Mockito.mock(CustomerRepository.class);
         orderMapperMock = Mockito.mock(OrderMapper.class);
         customerMapperMock = Mockito.mock(CustomerMapper.class);
-        orderService = new OrderService(orderRepositoryMock, itemGroupRepositoryMock, orderMapperMock, customerRepositoryMock, customerMapperMock);
+        orderService = new OrderService(orderRepositoryMock, itemGroupRepositoryMock, orderMapperMock,
+                customerRepositoryMock, customerMapperMock, ordersByShippingDateMapper);
     }
     @Test
     void createOrder() {

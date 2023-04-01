@@ -43,6 +43,18 @@ public class CustomerDTO {
         return phoneNumber;
     }
 
+    @Override
+    public String toString() {
+        return "CustomerDTO{" +
+                "id='" + id + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", address=" + address +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
+    }
+
     public static class CustomerDTOBuilder {
         private String id;
         private String firstName;
