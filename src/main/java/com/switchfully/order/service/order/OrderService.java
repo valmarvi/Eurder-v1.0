@@ -14,8 +14,10 @@ import com.switchfully.order.service.support.mapper.order.OrderMapper;
 import com.switchfully.order.service.support.mapper.user.CustomerMapper;
 import com.switchfully.order.service.support.wrapper.OrderDTOWrapper;
 import com.switchfully.order.service.support.wrapper.OrderWrapper;
+import com.switchfully.order.service.user.SecurityService;
 import org.springframework.stereotype.Service;
 
+import javax.naming.AuthenticationException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -28,16 +30,18 @@ public class OrderService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
     private final OrdersByShippingDateMapper ordersByShippingDateMapper;
+    private final SecurityService securityService;
 
     public OrderService(OrderRepository orderRepository, ItemGroupRepository itemGroupRepository,
                         OrderMapper orderMapper, CustomerRepository customerRepository, CustomerMapper customerMapper,
-                        OrdersByShippingDateMapper ordersByShippingDateMapper) {
+                        OrdersByShippingDateMapper ordersByShippingDateMapper, SecurityService securityService) {
         this.orderRepository = orderRepository;
         this.itemGroupRepository = itemGroupRepository;
         this.orderMapper = orderMapper;
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
         this.ordersByShippingDateMapper = ordersByShippingDateMapper;
+        this.securityService = securityService;
     }
 
     public OrderDTOWrapper createOrder(OrderWrapper orderWrapper) {
@@ -69,13 +73,15 @@ public class OrderService {
 
     private List<ItemGroup> unwrapOrderWrapperAndCreateItemGroups(OrderWrapper orderWrapper) {
         return orderWrapper.getItemGroupListDTO().stream()
-                .map(itemGroupDTO -> itemGroupRepository.createItemGroup(itemGroupDTO.getItemId(), itemGroupDTO.getAmount()))
+                .map(itemGroupDTO -> itemGroupRepository
+                                .createItemGroup(itemGroupDTO.getItemId(), itemGroupDTO.getAmount()))
                 .toList();
     }
 
-    public OrderDTOWrapper reorderOrder(String orderId) {
+    public OrderDTOWrapper reorderOrder(String orderId, String authorization) throws AuthenticationException {
         Map<Customer, Order> customerOrderEntry = orderRepository.getCustomerOrderEntryByOrderId(orderId);
         Customer customer = customerOrderEntry.keySet().stream().findFirst().get();
+        securityService.authenticateUser(customer.getId(), authorization);
         Order order = customerOrderEntry.values().stream().findFirst().get();
         List<ItemGroup> itemGroupList = order.getItemGroupList();
         List<ItemGroup> itemGroupListWithUpdatedPrice = itemGroupList

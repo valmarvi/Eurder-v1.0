@@ -47,10 +47,13 @@ public class OrderController {
     }
 
     @ResponseStatus(CREATED)
-    @PostMapping(produces = "application/json", value="reorder")
-    public OrderDTOWrapper reorderOrder(@RequestParam(required = false) String orderId){
+    @PostMapping(produces = "application/json", value = "reorder")
+    public OrderDTOWrapper reorderOrder(@RequestParam(required = false) String orderId,
+                                        @RequestHeader(required = false) String authorization)
+            throws AuthenticationException {
         myLogger.info("Adding a New Order to the Database Based on an Existing Order.");
-        return orderService.reorderOrder(orderId);
+        securityService.validateUser(authorization, CAN_ORDER_ITEMS);
+        return orderService.reorderOrder(orderId, authorization);
     }
 
     @ResponseStatus(OK)

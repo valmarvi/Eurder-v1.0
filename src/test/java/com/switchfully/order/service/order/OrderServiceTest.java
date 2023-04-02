@@ -18,6 +18,7 @@ import com.switchfully.order.service.support.mapper.order.OrderMapper;
 import com.switchfully.order.service.support.mapper.user.CustomerMapper;
 import com.switchfully.order.service.support.wrapper.OrderDTOWrapper;
 import com.switchfully.order.service.support.wrapper.OrderWrapper;
+import com.switchfully.order.service.user.SecurityService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,6 +45,7 @@ class OrderServiceTest {
     CustomerMapper customerMapperMock;
     OrderService orderService;
     OrdersByShippingDateMapper ordersByShippingDateMapper;
+    SecurityService securityService;
 
     Customer customer = new Customer.CustomerBuilder()
             .withFirstName("Roger")
@@ -83,8 +85,9 @@ class OrderServiceTest {
         customerRepositoryMock = Mockito.mock(CustomerRepository.class);
         orderMapperMock = Mockito.mock(OrderMapper.class);
         customerMapperMock = Mockito.mock(CustomerMapper.class);
+        securityService = Mockito.mock(SecurityService.class);
         orderService = new OrderService(orderRepositoryMock, itemGroupRepositoryMock, orderMapperMock,
-                customerRepositoryMock, customerMapperMock, ordersByShippingDateMapper);
+                customerRepositoryMock, customerMapperMock, ordersByShippingDateMapper, securityService);
     }
     @Test
     void createOrder() {
